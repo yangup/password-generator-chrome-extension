@@ -119,21 +119,23 @@ window.addEventListener("resize", e => {
 });
 
 // Copy Password in clipboard
-copyBtn.forEach((el, index) => {
-    el.addEventListener("click", () => {
-        const textarea = document.createElement("textarea");
-        const password = resultEl[index].innerText;
-        if (!password || password == "CLICK GENERATE") {
-            return;
-        }
-        textarea.value = password;
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        resultEl[index].classList.add('result-used');
+function copyBtnFunction() {
+    copyBtn.forEach((el, index) => {
+        el.addEventListener("click", () => {
+            const textarea = document.createElement("textarea");
+            const password = resultEl[index].innerText;
+            if (!password || password == "CLICK GENERATE") {
+                return;
+            }
+            textarea.value = password;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            textarea.remove();
+            resultEl[index].classList.add('result-used');
+        })
     })
-})
+}
 
 
 moreInfoEl.addEventListener("click", () => {
@@ -229,6 +231,19 @@ function init() {
         el.classList.remove('result-used');
     })
     console.log('init')
+    copyBtnFunction()
+
+    const textarea = document.createElement("textarea");
+    const password = resultEl[0].innerText;
+    if (!password || password == "CLICK GENERATE") {
+        return;
+    }
+    textarea.value = password;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    resultEl[0].classList.add('result-used');
 }
 
 // 页面加载时初始化复选框状态
