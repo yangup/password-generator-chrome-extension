@@ -71,6 +71,9 @@ const uppercaseEl = document.getElementById("uppercase");
 const lowercaseEl = document.getElementById("lowercase");
 const numberEl = document.getElementById("number");
 const symbolEl = document.getElementById("symbol");
+const moreInfoEl = document.getElementById("more-info");
+// const lengthSettingEl = document.getElementById("length-setting");
+const settingEl = document.getElementById("setting");
 
 const copyBtn = document.getElementById("copy-btn");
 // Result viewbox container
@@ -124,6 +127,17 @@ copyBtn.addEventListener("click", () => {
     resultEl.classList.add('result-used');
 });
 
+moreInfoEl.addEventListener("click", () => {
+    if (moreInfoEl.classList.contains('show')) {
+        // lengthSettingEl.style.display = 'none';
+        settingEl.style.display = 'none';
+        moreInfoEl.classList.remove('show')
+    } else {
+        // lengthSettingEl.style.display = 'block';
+        settingEl.style.display = 'block';
+        moreInfoEl.classList.add('show')
+    }
+});
 
 // 每 100 毫秒自动生成密码
 setInterval(() => {
