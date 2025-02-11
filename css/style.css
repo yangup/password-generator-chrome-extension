@@ -62,6 +62,9 @@ button {
   text-decoration-thickness: 3px;
 }
 
+.result__viewbox {
+  font-size: 1rem;
+}
 
 .result__info {
   position: absolute;

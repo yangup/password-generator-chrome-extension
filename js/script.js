@@ -140,7 +140,6 @@ moreInfoEl.addEventListener("click", () => {
     }
 });
 
-
 let indexGenerate = 0;
 // 每 100 毫秒自动生成密码
 setInterval(() => {
@@ -153,6 +152,16 @@ setInterval(() => {
     resultEl[indexGenerate % resultEl.length].innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
     resultEl[indexGenerate % resultEl.length].classList.remove('result-used');
 }, 500);
+
+const length = +lengthEl.value;
+const hasLower = lowercaseEl.checked;
+const hasUpper = uppercaseEl.checked;
+const hasNumber = numberEl.checked;
+const hasSymbol = symbolEl.checked;
+resultEl.forEach(el => {
+    el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+    el.classList.remove('result-used');
+})
 
 // Function responsible to generate password and then returning it.
 function generatePassword(length, lower, upper, number, symbol) {
