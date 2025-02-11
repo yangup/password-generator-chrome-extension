@@ -97,7 +97,7 @@ button {
   left: var(--x);
   width: 38px;
   height: 38px;
-  background: #fff;
+  background-color: #ffffff00;
   border-radius: 50%;
   opacity: 0;
   -webkit-transform: translate(-50%, -50%) scale(0);
@@ -175,6 +175,10 @@ button {
 .range__slider::after {
   content: attr(data-max);
   right: 10px;
+}
+
+.length__title {
+  padding-right: 5px;
 }
 
 .range__slider .length__title::after {

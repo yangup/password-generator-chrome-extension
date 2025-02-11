@@ -139,7 +139,7 @@ setInterval(() => {
     // copyInfo.style.opacity = "0.75";
     // copiedInfo.style.transform = "translateY(200%)";
     // copiedInfo.style.opacity = "0";
-}, 5000);
+}, 1000);
 
 
 // Function responsible to generate password and then returning it.
