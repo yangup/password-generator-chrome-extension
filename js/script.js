@@ -61,8 +61,6 @@ function getRandomSymbol() {
 
 // Selecting all the DOM Elements that are necessary -->
 
-// The Viewbox where the result will be shown
-const resultEl = document.getElementById("result");
 // The input slider, will use to change the length of the password
 const lengthEl = document.getElementById("slider");
 
@@ -75,12 +73,16 @@ const moreInfoEl = document.getElementById("more-info");
 // const lengthSettingEl = document.getElementById("length-setting");
 const settingEl = document.getElementById("setting");
 
-const copyBtn = document.getElementById("copy-btn");
+// The Viewbox where the result will be shown
+let resultEl = [];
+let copyBtn = [];
+for (let i = 1; i <= 5; i++) {
+    resultEl.push(document.getElementById(`result${i}`));
+    copyBtn.push(document.getElementById(`copy-btn${i}`));
+}
+
 // Result viewbox container
 const resultContainer = document.querySelector(".result");
-
-// if this variable is trye only then the copyBtn will appear, i.e. when the user first click generate the copyBth will interact.
-let generatedPassword = false;
 
 // Update Css Props of the COPY button
 // Getting the bounds of the result viewbox container
@@ -94,15 +96,12 @@ resultContainer.addEventListener("mousemove", e => {
         left: resultContainer.getBoundingClientRect().left,
         top: resultContainer.getBoundingClientRect().top,
     };
-    if (generatedPassword) {
-        copyBtn.style.opacity = '1';
-        copyBtn.style.pointerEvents = 'all';
-        copyBtn.style.setProperty("--x", `${e.x - resultContainerBound.left}px`);
-        copyBtn.style.setProperty("--y", `${e.y - resultContainerBound.top}px`);
-    } else {
-        copyBtn.style.opacity = '0';
-        copyBtn.style.pointerEvents = 'none';
-    }
+    copyBtn.forEach((el, index) => {
+        el.style.opacity = '1';
+        el.style.pointerEvents = 'all';
+        el.style.setProperty("--x", `${e.x - resultContainerBound.left}px`);
+        el.style.setProperty("--y", `${e.y - resultContainerBound.top}px`);
+    })
 });
 window.addEventListener("resize", e => {
     resultContainerBound = {
@@ -112,20 +111,22 @@ window.addEventListener("resize", e => {
 });
 
 // Copy Password in clipboard
-copyBtn.addEventListener("click", () => {
-    const textarea = document.createElement("textarea");
-    const password = resultEl.innerText;
-    if (!password || password == "CLICK GENERATE") {
-        return;
-    }
-    textarea.value = password;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    textarea.remove();
+copyBtn.forEach((el, index) => {
+    el.addEventListener("click", () => {
+        const textarea = document.createElement("textarea");
+        const password = resultEl[index].innerText;
+        if (!password || password == "CLICK GENERATE") {
+            return;
+        }
+        textarea.value = password;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand("copy");
+        textarea.remove();
+        resultEl[index].classList.add('result-used');
+    })
+})
 
-    resultEl.classList.add('result-used');
-});
 
 moreInfoEl.addEventListener("click", () => {
     if (moreInfoEl.classList.contains('show')) {
@@ -139,6 +140,8 @@ moreInfoEl.addEventListener("click", () => {
     }
 });
 
+
+let indexGenerate = 0;
 // 每 100 毫秒自动生成密码
 setInterval(() => {
     const length = +lengthEl.value;
@@ -146,15 +149,10 @@ setInterval(() => {
     const hasUpper = uppercaseEl.checked;
     const hasNumber = numberEl.checked;
     const hasSymbol = symbolEl.checked;
-    generatedPassword = true;
-    resultEl.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
-    resultEl.classList.remove('result-used');
-    // copyInfo.style.transform = "translateY(0%)";
-    // copyInfo.style.opacity = "0.75";
-    // copiedInfo.style.transform = "translateY(200%)";
-    // copiedInfo.style.opacity = "0";
-}, 1000);
-
+    indexGenerate++;
+    resultEl[indexGenerate % resultEl.length].innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+    resultEl[indexGenerate % resultEl.length].classList.remove('result-used');
+}, 500);
 
 // Function responsible to generate password and then returning it.
 function generatePassword(length, lower, upper, number, symbol) {

@@ -50,8 +50,9 @@ button {
 
 .result {
   position: relative;
+  margin-bottom: 10px;
   width: 100%;
-  height: 65px;
+  height: 50px;
   overflow: hidden;
 }
 
@@ -89,10 +90,10 @@ button {
   border-radius: 8px;
   color: #fff;
   text-align: center;
-  line-height: 65px;
+  line-height: 50px;
 }
 
-.result #copy-btn {
+.result > .copy-btn {
   position: absolute;
   top: var(--y);
   left: var(--x);
@@ -109,12 +110,12 @@ button {
   z-index: 2;
 }
 
-.result #copy-btn:active {
+.result > .copy-btn:active {
   -webkit-box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
           box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
 }
 
-.result:hover #copy-btn {
+.result:hover > .copy-btn {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%) scale(1.35);
           transform: translate(-50%, -50%) scale(1.35);
