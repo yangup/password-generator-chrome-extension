@@ -73,6 +73,14 @@ const moreInfoEl = document.getElementById("more-info");
 // const lengthSettingEl = document.getElementById("length-setting");
 const settingEl = document.getElementById("setting");
 
+// 定义复选框的元素和存储键
+const checkboxes = [
+    {el: uppercaseEl, storageKey: "checkbox0"},
+    {el: lowercaseEl, storageKey: "checkbox1"},
+    {el: numberEl, storageKey: "checkbox2"},
+    {el: symbolEl, storageKey: "checkbox3"}
+];
+
 // The Viewbox where the result will be shown
 let resultEl = [];
 let copyBtn = [];
@@ -153,16 +161,6 @@ setInterval(() => {
     resultEl[indexGenerate % resultEl.length].classList.remove('result-used');
 }, 500);
 
-const length = +lengthEl.value;
-const hasLower = lowercaseEl.checked;
-const hasUpper = uppercaseEl.checked;
-const hasNumber = numberEl.checked;
-const hasSymbol = symbolEl.checked;
-resultEl.forEach(el => {
-    el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
-    el.classList.remove('result-used');
-})
-
 // Function responsible to generate password and then returning it.
 function generatePassword(length, lower, upper, number, symbol) {
     let generatedPassword = "";
@@ -192,8 +190,58 @@ function disableOnlyCheckbox() {
     })
 }
 
-[uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach(el => {
+[uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach((el, index) => {
     el.addEventListener('click', () => {
         disableOnlyCheckbox()
+        if (chrome && chrome.storage) {
+            chrome.storage.local.set({
+                [`checkbox${index}`]: el.checked
+            }, () => {
+                console.log(`checkbox${index} has been saved`);
+            });
+        }
     })
 })
+
+// 初始化复选框状态
+function init() {
+    const keys = checkboxes.map(item => item.storageKey);
+
+    if (chrome && chrome.storage) {
+        chrome.storage.local.get(keys, (result) => {
+            checkboxes.forEach(item => {
+                const isChecked = result[item.storageKey] !== undefined ? result[item.storageKey] : false;
+                item.el.checked = isChecked; // 设置复选框状态
+            });
+
+            // 调用 disableOnlyCheckbox 来确保至少一个复选框被选中
+            disableOnlyCheckbox();
+        });
+    }
+
+    const length = +lengthEl.value;
+    const hasLower = lowercaseEl.checked;
+    const hasUpper = uppercaseEl.checked;
+    const hasNumber = numberEl.checked;
+    const hasSymbol = symbolEl.checked;
+    resultEl.forEach(el => {
+        el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+        el.classList.remove('result-used');
+    })
+    console.log('init')
+}
+
+// 页面加载时初始化复选框状态
+window.addEventListener("load", init);
+
+
+// console.log('init12122')
+
+
+
+
+
+
+
+
+
