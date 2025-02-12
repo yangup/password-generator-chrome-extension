@@ -128,16 +128,31 @@ function scriptInit() {
     function copyBtnFunction() {
         copyBtn.forEach((el, index) => {
             el.addEventListener("click", () => {
-                copyOne(index)
+                copyOne(index, 'M')
             })
         })
     }
 
-    function copyOne(index) {
+    function copyOne(index, type = 'A') {
         const textarea = document.createElement("textarea");
         const password = passwordEl[index].innerText;
         if (!password || password == "CLICK GENERATE") {
             return;
+        }
+        // 保存到本地
+        // 保留最新的 1W 条
+        if (chrome && chrome.storage) {
+            let k = 'password_history';
+            chrome.storage.local.get(k, (passwordHistory) => {
+                let historyList = passwordHistory[k] || [];
+                historyList.push([new Date().toLocaleString(), type, password]);
+                if (historyList.length > 10000) {
+                    historyList = historyList.slice(-10000);
+                }
+                chrome.storage.local.set({
+                    [k]: historyList
+                });
+            });
         }
         textarea.value = password;
         document.body.appendChild(textarea);
@@ -157,29 +172,48 @@ function scriptInit() {
             el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
             el.classList.remove('password-used');
         })
-        copyOne(0)
+        copyOne(0, 'A')
     }
 
     moreInfoEl.addEventListener("click", () => {
-        if (moreInfoEl.classList.contains('show')) {
-            // lengthSettingEl.style.display = 'none';
-            settingEl.style.display = 'none';
-            moreInfoEl.classList.remove('show')
+        if (passwordAllEl.style.display === 'none') {
+            historyAllEl.style.display = 'none';
+            passwordAllEl.style.display = 'block';
         } else {
-            // lengthSettingEl.style.display = 'block';
-            settingEl.style.display = 'block';
-            moreInfoEl.classList.add('show')
+            if (settingEl.style.display === 'none') {
+                settingEl.style.display = 'block';
+            } else {
+                settingEl.style.display = 'none';
+            }
         }
     });
 
-     historyEl.addEventListener("click", () => {
-         if (historyAllEl.style.display === 'none') {
-             historyAllEl.style.display = 'block';
-             passwordAllEl.style.display = 'none';
-         } else {
-             historyAllEl.style.display = 'none';
-             passwordAllEl.style.display = 'block';
-         }
+    historyEl.addEventListener("click", () => {
+        if (historyAllEl.style.display === 'none') {
+            historyAllEl.style.display = 'block';
+            passwordAllEl.style.display = 'none';
+            // 加载历史记录
+            if (chrome && chrome.storage) {
+                chrome.storage.local.get('password_history', (historyList) => {
+                    if (historyList && historyList.password_history && historyList.password_history.length > 0) {
+                        historyAllEl.innerHTML = '';
+                        historyList.password_history.forEach((item, index) => {
+                            let historyItem = document.createElement('div');
+                            historyItem.classList.add('history');
+                            historyItem.innerHTML = `
+                                <span>${item[0]}</span>
+                                <span>${item[1]}</span>
+                                <span style="float: right;">${item[2]}</span>
+                            `
+                            historyAllEl.appendChild(historyItem);
+                        })
+                    }
+                });
+            }
+        } else {
+            historyAllEl.style.display = 'none';
+            passwordAllEl.style.display = 'block';
+        }
     });
 
     let indexGenerate = 0;
@@ -239,7 +273,12 @@ function scriptInit() {
             initPassword()
             if (chrome && chrome.storage) {
                 chrome.storage.local.set({
-                    [`checkbox${index}`]: el.checked
+                    [`
+                            checkbox$
+                            {
+                                index
+                            }
+                            `]: el.checked
                 });
             }
         })
@@ -265,6 +304,8 @@ function scriptInit() {
 
 // 页面加载时初始化复选框状态
     window.addEventListener("load", init);
+
+    chrome.storage.local.clear()
 
 }
 
