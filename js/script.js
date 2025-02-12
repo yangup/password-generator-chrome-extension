@@ -1,5 +1,9 @@
 function scriptInit() {
 
+     if (document.getElementById("password-generator-chrome-extension-by-yanpgu") === null) {
+        return;
+    }
+
     const sliderProps = {
         fill: "#0B1EDF",
         background: "rgba(255, 255, 255, 0.214)",
@@ -7,10 +11,6 @@ function scriptInit() {
 
 // Selecting the Range Slider container which will effect the LENGTH property of the password.
     const slider = document.querySelector(".range__slider");
-
-    if (slider === null) {
-        return;
-    }
 
 // Text which will show the value of the range slider.
     const sliderValue = document.querySelector(".length__title");
