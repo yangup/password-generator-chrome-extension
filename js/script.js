@@ -19,9 +19,23 @@ function scriptInit() {
     slider.querySelector("input").addEventListener("input", event => {
         sliderValue.setAttribute("data-length", event.target.value);
         applyFill(event.target);
+        initPassword();
+        if (chrome && chrome.storage) {
+            chrome.storage.local.set({
+                'input_length': event.target.value
+            });
+        }
     });
 // Selecting the range input and passing it in the applyFill func.
     applyFill(slider.querySelector("input"));
+    if (chrome && chrome.storage) {
+        chrome.storage.local.get('input_length', (password) => {
+            if (password) {
+                slider.querySelector("input").value = password.input_length;
+                applyFill(slider.querySelector("input"));
+            }
+        });
+    }
 
 // This function is responsible to create the trailing color and setting the fill.
     function applyFill(slider) {
@@ -213,8 +227,6 @@ function scriptInit() {
             if (chrome && chrome.storage) {
                 chrome.storage.local.set({
                     [`checkbox${index}`]: el.checked
-                }, () => {
-                    console.log(`checkbox${index} has been saved`);
                 });
             }
         })
