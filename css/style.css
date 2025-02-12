@@ -252,6 +252,7 @@ button {
 }
 
 .settings .setting {
+  font-size: 1rem;
   position: relative;
   width: 100%;
   height: calc(65px - 10px);
