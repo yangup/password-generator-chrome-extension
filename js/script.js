@@ -98,7 +98,7 @@ function scriptInit() {
 // The Viewbox where the password will be shown
     let passwordEl = [];
     let copyBtn = [];
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 6; i++) {
         passwordEl.push(document.getElementById(`password${i}`));
         copyBtn.push(document.getElementById(`copy-btn${i}`));
     }
@@ -182,7 +182,7 @@ function scriptInit() {
         indexGenerate++;
         passwordEl[indexGenerate % passwordEl.length].innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
         passwordEl[indexGenerate % passwordEl.length].classList.remove('password-used');
-    }, 500);
+    }, 1000);
 
 // Function responsible to generate password and then returning it.
     function generatePassword(length, lower, upper, number, symbol) {
