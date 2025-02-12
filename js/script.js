@@ -72,10 +72,10 @@ const settingEl = document.getElementById("setting");
 
 // 定义复选框的元素和存储键
 const checkboxes = [
-    {el: uppercaseEl, storageKey: "checkbox0"},
-    {el: lowercaseEl, storageKey: "checkbox1"},
-    {el: numberEl, storageKey: "checkbox2"},
-    {el: symbolEl, storageKey: "checkbox3"}
+    {el: uppercaseEl, storageKey: "checkbox0", defaultValue: true},
+    {el: lowercaseEl, storageKey: "checkbox1", defaultValue: true},
+    {el: numberEl, storageKey: "checkbox2", defaultValue: true},
+    {el: symbolEl, storageKey: "checkbox3", defaultValue: false}
 ];
 
 // The Viewbox where the password will be shown
@@ -224,8 +224,7 @@ function init() {
     if (chrome && chrome.storage) {
         chrome.storage.local.get(keys, (password) => {
             checkboxes.forEach(item => {
-                const isChecked = password[item.storageKey] !== undefined ? password[item.storageKey] : false;
-                item.el.checked = isChecked; // 设置复选框状态
+                item.el.checked = password[item.storageKey] !== undefined ? password[item.storageKey] : item.defaultValue;
             });
             // 调用 disableOnlyCheckbox 来确保至少一个复选框被选中
             disableOnlyCheckbox();
