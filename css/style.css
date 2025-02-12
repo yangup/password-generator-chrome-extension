@@ -48,7 +48,7 @@ button {
   cursor: pointer;
 }
 
-.result {
+.password {
   position: relative;
   margin-bottom: 10px;
   width: 100%;
@@ -56,17 +56,17 @@ button {
   overflow: hidden;
 }
 
-.result-used {
+.password-used {
   text-decoration: line-through;
   text-decoration-color: red;
   text-decoration-thickness: 3px;
 }
 
-.result__viewbox {
+.password__viewbox {
   font-size: 1rem;
 }
 
-.result__info {
+.password__info {
   position: absolute;
   bottom: 4px;
   color: #fff;
@@ -78,15 +78,15 @@ button {
   opacity: 0;
 }
 
-.result__info.right {
+.password__info.right {
   right: 8px;
 }
 
-.result__info.left {
+.password__info.left {
   left: 8px;
 }
 
-.result__viewbox {
+.password__viewbox {
   width: 100%;
   height: 100%;
   background: rgba(255, 255, 255, 0.08);
@@ -96,7 +96,7 @@ button {
   line-height: 50px;
 }
 
-.result > .copy-btn {
+.password > .copy-btn {
   position: absolute;
   top: var(--y);
   left: var(--x);
@@ -113,12 +113,12 @@ button {
   z-index: 2;
 }
 
-.result > .copy-btn:active {
+.password > .copy-btn:active {
   -webkit-box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
           box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
 }
 
-.result:hover > .copy-btn {
+.password:hover > .copy-btn {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%) scale(1.35);
           transform: translate(-50%, -50%) scale(1.35);

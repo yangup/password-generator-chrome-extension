@@ -79,18 +79,18 @@ const checkboxes = [
     {el: symbolEl, storageKey: "checkbox3"}
 ];
 
-// The Viewbox where the result will be shown
-let resultEl = [];
+// The Viewbox where the password will be shown
+let passwordEl = [];
 let copyBtn = [];
 for (let i = 1; i <= 5; i++) {
-    resultEl.push(document.getElementById(`result${i}`));
+    passwordEl.push(document.getElementById(`password${i}`));
     copyBtn.push(document.getElementById(`copy-btn${i}`));
 }
 
-// Result viewbox container
-const resultContainer = document.querySelectorAll(".result");
+// password viewbox container
+const passwordContainer = document.querySelectorAll(".password");
 
-resultContainer.forEach((el, index) => {
+passwordContainer.forEach((el, index) => {
     // This will update the position of the copy button based on mouse Position
     el.addEventListener("mousemove", e => {
         let copyBtnIndex = copyBtn[index]
@@ -116,7 +116,7 @@ function copyBtnFunction() {
 
 function copyOne(index) {
     const textarea = document.createElement("textarea");
-    const password = resultEl[index].innerText;
+    const password = passwordEl[index].innerText;
     if (!password || password == "CLICK GENERATE") {
         return;
     }
@@ -125,18 +125,18 @@ function copyOne(index) {
     textarea.select();
     document.execCommand("copy");
     textarea.remove();
-    resultEl[index].classList.add('result-used');
+    passwordEl[index].classList.add('password-used');
 }
 
-function initResult() {
+function initpassword() {
     const length = +lengthEl.value;
     const hasLower = lowercaseEl.checked;
     const hasUpper = uppercaseEl.checked;
     const hasNumber = numberEl.checked;
     const hasSymbol = symbolEl.checked;
-    resultEl.forEach(el => {
+    passwordEl.forEach(el => {
         el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
-        el.classList.remove('result-used');
+        el.classList.remove('password-used');
     })
     copyOne(0)
 }
@@ -162,8 +162,8 @@ setInterval(() => {
     const hasNumber = numberEl.checked;
     const hasSymbol = symbolEl.checked;
     indexGenerate++;
-    resultEl[indexGenerate % resultEl.length].innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
-    resultEl[indexGenerate % resultEl.length].classList.remove('result-used');
+    passwordEl[indexGenerate % passwordEl.length].innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+    passwordEl[indexGenerate % passwordEl.length].classList.remove('password-used');
 }, 500);
 
 // Function responsible to generate password and then returning it.
@@ -207,7 +207,7 @@ function disableOnlyCheckbox() {
 [uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach((el, index) => {
     el.addEventListener('click', () => {
         disableOnlyCheckbox()
-        initResult()
+        initpassword()
         if (chrome && chrome.storage) {
             chrome.storage.local.set({
                 [`checkbox${index}`]: el.checked
@@ -223,18 +223,18 @@ function init() {
     console.log('init')
     const keys = checkboxes.map(item => item.storageKey);
     if (chrome && chrome.storage) {
-        chrome.storage.local.get(keys, (result) => {
+        chrome.storage.local.get(keys, (password) => {
             checkboxes.forEach(item => {
-                const isChecked = result[item.storageKey] !== undefined ? result[item.storageKey] : false;
+                const isChecked = password[item.storageKey] !== undefined ? password[item.storageKey] : false;
                 item.el.checked = isChecked; // 设置复选框状态
             });
             // 调用 disableOnlyCheckbox 来确保至少一个复选框被选中
             disableOnlyCheckbox();
-            initResult();
+            initpassword();
             copyOne(0);
         });
     }
-    initResult()
+    initpassword()
     copyBtnFunction()
     copyOne(0)
 }
