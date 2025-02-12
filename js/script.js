@@ -109,21 +109,37 @@ resultContainer.forEach((el, index) => {
 function copyBtnFunction() {
     copyBtn.forEach((el, index) => {
         el.addEventListener("click", () => {
-            const textarea = document.createElement("textarea");
-            const password = resultEl[index].innerText;
-            if (!password || password == "CLICK GENERATE") {
-                return;
-            }
-            textarea.value = password;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand("copy");
-            textarea.remove();
-            resultEl[index].classList.add('result-used');
+            copyOne(index)
         })
     })
 }
 
+function copyOne(index) {
+    const textarea = document.createElement("textarea");
+    const password = resultEl[index].innerText;
+    if (!password || password == "CLICK GENERATE") {
+        return;
+    }
+    textarea.value = password;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand("copy");
+    textarea.remove();
+    resultEl[index].classList.add('result-used');
+}
+
+function initResult() {
+    const length = +lengthEl.value;
+    const hasLower = lowercaseEl.checked;
+    const hasUpper = uppercaseEl.checked;
+    const hasNumber = numberEl.checked;
+    const hasSymbol = symbolEl.checked;
+    resultEl.forEach(el => {
+        el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
+        el.classList.remove('result-used');
+    })
+    copyOne(0)
+}
 
 moreInfoEl.addEventListener("click", () => {
     if (moreInfoEl.classList.contains('show')) {
@@ -182,6 +198,7 @@ function disableOnlyCheckbox() {
 [uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach((el, index) => {
     el.addEventListener('click', () => {
         disableOnlyCheckbox()
+        initResult()
         if (chrome && chrome.storage) {
             chrome.storage.local.set({
                 [`checkbox${index}`]: el.checked
@@ -194,56 +211,25 @@ function disableOnlyCheckbox() {
 
 // 初始化复选框状态
 function init() {
+    console.log('init')
     const keys = checkboxes.map(item => item.storageKey);
-
     if (chrome && chrome.storage) {
         chrome.storage.local.get(keys, (result) => {
             checkboxes.forEach(item => {
                 const isChecked = result[item.storageKey] !== undefined ? result[item.storageKey] : false;
                 item.el.checked = isChecked; // 设置复选框状态
             });
-
             // 调用 disableOnlyCheckbox 来确保至少一个复选框被选中
             disableOnlyCheckbox();
+            initResult();
+            copyOne(0);
         });
     }
-
-    const length = +lengthEl.value;
-    const hasLower = lowercaseEl.checked;
-    const hasUpper = uppercaseEl.checked;
-    const hasNumber = numberEl.checked;
-    const hasSymbol = symbolEl.checked;
-    resultEl.forEach(el => {
-        el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
-        el.classList.remove('result-used');
-    })
-    console.log('init')
+    initResult()
     copyBtnFunction()
-
-    const textarea = document.createElement("textarea");
-    const password = resultEl[0].innerText;
-    if (!password || password == "CLICK GENERATE") {
-        return;
-    }
-    textarea.value = password;
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand("copy");
-    textarea.remove();
-    resultEl[0].classList.add('result-used');
+    copyOne(0)
 }
 
 // 页面加载时初始化复选框状态
 window.addEventListener("load", init);
-
-
-// console.log('init12122')
-
-
-
-
-
-
-
-
 
