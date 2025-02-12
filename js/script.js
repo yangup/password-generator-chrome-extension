@@ -72,7 +72,7 @@ function scriptInit() {
     }
 
     function getRandomSymbol() {
-        const symbols = '~!@#$%^&*()_+{}":?><;.,';
+        const symbols = '!@#$%^&*';
         return symbols[Math.floor(Math.random() * symbols.length)];
     }
 
@@ -168,6 +168,8 @@ function scriptInit() {
             moreInfoEl.classList.add('show')
         }
     });
+
+    // settingEl.style.display = 'block';
 
     let indexGenerate = 0;
 // 每 100 毫秒自动生成密码
