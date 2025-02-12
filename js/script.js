@@ -128,12 +128,12 @@ function scriptInit() {
     function copyBtnFunction() {
         copyBtn.forEach((el, index) => {
             el.addEventListener("click", () => {
-                copyOne(index, 'M')
+                copyOne(index, 'manual')
             })
         })
     }
 
-    function copyOne(index, type = 'A') {
+    function copyOne(index, type = 'auto') {
         const textarea = document.createElement("textarea");
         const password = passwordEl[index].innerText;
         if (!password || password == "CLICK GENERATE") {
@@ -145,9 +145,17 @@ function scriptInit() {
             let k = 'password_history';
             chrome.storage.local.get(k, (passwordHistory) => {
                 let historyList = passwordHistory[k] || [];
-                historyList.push([new Date().toLocaleString(), type, password]);
-                if (historyList.length > 10000) {
-                    historyList = historyList.slice(-10000);
+                let formatter = new Intl.DateTimeFormat('en-US', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: false // 24 小时制
+                });
+                let formattedDate = formatter.format(new Date()); // 格式化日期s
+                historyList.unshift([formattedDate, type, password]);
+                if (historyList.length > 100000) {
+                    historyList = historyList.slice(0, 100000);
                 }
                 chrome.storage.local.set({
                     [k]: historyList
@@ -172,7 +180,7 @@ function scriptInit() {
             el.innerText = generatePassword(length, hasLower, hasUpper, hasNumber, hasSymbol);
             el.classList.remove('password-used');
         })
-        copyOne(0, 'A')
+        copyOne(0, 'auto')
     }
 
     moreInfoEl.addEventListener("click", () => {
@@ -202,7 +210,8 @@ function scriptInit() {
                             historyItem.classList.add('history');
                             historyItem.innerHTML = `
                                 <span>${item[0]}</span>
-                                <span>${item[1]}</span>
+                                <span style="color:lightblue">${item[1]}</span>
+                                <span> </span>
                                 <span style="float: right;">${item[2]}</span>
                             `
                             historyAllEl.appendChild(historyItem);
@@ -305,7 +314,7 @@ function scriptInit() {
 // 页面加载时初始化复选框状态
     window.addEventListener("load", init);
 
-    chrome.storage.local.clear()
+    // chrome.storage.local.clear()
 
 }
 
