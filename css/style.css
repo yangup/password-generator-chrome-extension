@@ -138,6 +138,15 @@ button {
           transform: translate(-50%, -50%) scale(1.35);
 }
 
+.history-all {
+  font-size: 1rem;
+  color: #fff;
+}
+
+.history-password {
+  float: right;
+}
+
 .field-title {
   position: absolute;
   top: -10px;

@@ -46,35 +46,43 @@
             <div class="length__title field-title" data-length="20">length:</div>
             <input id="slider" type="range" min="4" max="32" value="20"/>
         </div>
+
+        <div class="settings" id="setting" style="display: none">
+            <span class="settings__title field-title">settings</span>
+            <div class="setting">
+                <input type="checkbox" id="uppercase" checked/>
+                <label for="uppercase">Include Uppercase</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="lowercase" checked/>
+                <label for="lowercase">Include Lowercase</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="number" checked/>
+                <label for="number">Include Numbers</label>
+            </div>
+            <div class="setting">
+                <input type="checkbox" id="symbol"/>
+                <label for="symbol">Include Symbols</label>
+            </div>
+        </div>
     </div>
 
-    <div class="settings" id="setting" style="display: none">
-        <span class="settings__title field-title">settings</span>
-        <div class="setting">
-            <input type="checkbox" id="uppercase" checked/>
-            <label for="uppercase">Include Uppercase</label>
+    <div class="history-all" style="display: none">
+        <div class="history">
+            <span>2025-02-12 15:16</span>
+            <span class="history-password">Avp8y8lVFzT6AHr</span>
         </div>
-        <div class="setting">
-            <input type="checkbox" id="lowercase" checked/>
-            <label for="lowercase">Include Lowercase</label>
+        <div class="history">
+            <span>2025-02-12 15:16</span>
+            <span class="history-password">Avp8y8lVFzT6AHr</span>
         </div>
-        <div class="setting">
-            <input type="checkbox" id="number" checked/>
-            <label for="number">Include Numbers</label>
+        <div class="history">
+            <span>2025-02-12 15:16</span>
+            <span class="history-password">Avp8y8lVFzT6AHr</span>
         </div>
-        <div class="setting">
-            <input type="checkbox" id="symbol"/>
-            <label for="symbol">Include Symbols</label>
-        </div>
-
-<!--        <div class="history">-->
-<!--            <div class="history__viewbox_left">2025-02-12 14:41</div>-->
-<!--            <div class="history__viewbox">L7eJOT5uaDxyCBV0</div>-->
-<!--            <button class="history-copy-btn" style="&#45;&#45;x: 0; &#45;&#45;y: 0"></button>-->
-<!--        </div>-->
-
-
     </div>
+
 </div>
 
 <script src="js/script.js"></script>

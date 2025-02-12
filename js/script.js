@@ -11,6 +11,9 @@ function scriptInit() {
 
 // Selecting the Range Slider container which will effect the LENGTH property of the password.
     const slider = document.querySelector(".range__slider");
+    const historyEl = document.querySelector(".history__title");
+    const passwordAllEl = document.querySelector(".password-all");
+    const historyAllEl = document.querySelector(".history-all");
 
 // Text which will show the value of the range slider.
     const sliderValue = document.querySelector(".length__title");
@@ -169,7 +172,15 @@ function scriptInit() {
         }
     });
 
-    // settingEl.style.display = 'block';
+     historyEl.addEventListener("click", () => {
+         if (historyAllEl.style.display === 'none') {
+             historyAllEl.style.display = 'block';
+             passwordAllEl.style.display = 'none';
+         } else {
+             historyAllEl.style.display = 'none';
+             passwordAllEl.style.display = 'block';
+         }
+    });
 
     let indexGenerate = 0;
 // 每 100 毫秒自动生成密码
