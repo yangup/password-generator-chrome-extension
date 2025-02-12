@@ -59,8 +59,6 @@ function getRandomSymbol() {
     return symbols[Math.floor(Math.random() * symbols.length)];
 }
 
-// Selecting all the DOM Elements that are necessary -->
-
 // The input slider, will use to change the length of the password
 const lengthEl = document.getElementById("slider");
 
@@ -90,32 +88,21 @@ for (let i = 1; i <= 5; i++) {
 }
 
 // Result viewbox container
-const resultContainer = document.querySelector(".result");
+const resultContainer = document.querySelectorAll(".result");
 
-// Update Css Props of the COPY button
-// Getting the bounds of the result viewbox container
-let resultContainerBound = {
-    left: resultContainer.getBoundingClientRect().left,
-    top: resultContainer.getBoundingClientRect().top,
-};
-// This will update the position of the copy button based on mouse Position
-resultContainer.addEventListener("mousemove", e => {
-    resultContainerBound = {
-        left: resultContainer.getBoundingClientRect().left,
-        top: resultContainer.getBoundingClientRect().top,
-    };
-    copyBtn.forEach((el, index) => {
-        el.style.opacity = '1';
-        el.style.pointerEvents = 'all';
-        el.style.setProperty("--x", `${e.x - resultContainerBound.left}px`);
-        el.style.setProperty("--y", `${e.y - resultContainerBound.top}px`);
-    })
-});
-window.addEventListener("resize", e => {
-    resultContainerBound = {
-        left: resultContainer.getBoundingClientRect().left,
-        top: resultContainer.getBoundingClientRect().top,
-    };
+resultContainer.forEach((el, index) => {
+    // This will update the position of the copy button based on mouse Position
+    el.addEventListener("mousemove", e => {
+        let copyBtnIndex = copyBtn[index]
+        let elSize = {
+            left: el.getBoundingClientRect().left,
+            top: el.getBoundingClientRect().top,
+        };
+        copyBtnIndex.style.opacity = '1';
+        copyBtnIndex.style.pointerEvents = 'all';
+        copyBtnIndex.style.setProperty("--x", `${e.x - elSize.left}px`);
+        copyBtnIndex.style.setProperty("--y", `${e.y - elSize.top}px`);
+    });
 });
 
 // Copy Password in clipboard
