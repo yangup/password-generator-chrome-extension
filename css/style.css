@@ -124,6 +124,82 @@ button {
           transform: translate(-50%, -50%) scale(1.35);
 }
 
+.history {
+  position: relative;
+  margin-bottom: 10px;
+  width: 100%;
+  height: 50px;
+  overflow: hidden;
+}
+
+.history-used {
+  text-decoration: line-through;
+  text-decoration-color: red;
+  text-decoration-thickness: 3px;
+}
+
+.history__viewbox {
+  font-size: 1rem;
+}
+
+.history__info {
+  position: absolute;
+  bottom: 4px;
+  color: #fff;
+  font-size: 0.8rem;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+  -webkit-transform: translateY(200%);
+          transform: translateY(200%);
+  opacity: 0;
+}
+
+.history__info.right {
+  right: 8px;
+}
+
+.history__info.left {
+  left: 8px;
+}
+
+.history__viewbox {
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #fff;
+  text-align: center;
+  line-height: 50px;
+}
+
+.history > .copy-btn {
+  position: absolute;
+  top: var(--y);
+  left: var(--x);
+  width: 38px;
+  height: 38px;
+  background-color: #ffffff00;
+  border-radius: 50%;
+  opacity: 0;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+          transform: translate(-50%, -50%) scale(0);
+  -webkit-transition: all 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: all 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  cursor: pointer;
+  z-index: 2;
+}
+
+.history > .copy-btn:active {
+  -webkit-box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
+          box-shadow: 0 0 0 200px rgba(255, 255, 255, 0.08);
+}
+
+.history:hover > .copy-btn {
+  opacity: 1;
+  -webkit-transform: translate(-50%, -50%) scale(1.35);
+          transform: translate(-50%, -50%) scale(1.35);
+}
+
 .field-title {
   position: absolute;
   top: -10px;
