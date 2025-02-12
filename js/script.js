@@ -21,9 +21,7 @@ applyFill(slider.querySelector("input"));
 // This function is responsible to create the trailing color and setting the fill.
 function applyFill(slider) {
     const percentage = (100 * (slider.value - slider.min)) / (slider.max - slider.min);
-    const bg = `linear-gradient(90deg, ${sliderProps.fill} ${percentage}%, ${sliderProps.background} ${percentage +
-    0.1}%)`;
-    slider.style.background = bg;
+    slider.style.background = `linear-gradient(90deg, ${sliderProps.fill} ${percentage}%, ${sliderProps.background} ${percentage + 0.1}%)`;
     sliderValue.setAttribute("data-length", slider.value);
 }
 
