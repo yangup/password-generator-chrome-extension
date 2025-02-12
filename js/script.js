@@ -282,12 +282,7 @@ function scriptInit() {
             initPassword()
             if (chrome && chrome.storage) {
                 chrome.storage.local.set({
-                    [`
-                            checkbox$
-                            {
-                                index
-                            }
-                            `]: el.checked
+                    [`checkbox${index}`]: el.checked
                 });
             }
         })
