@@ -68,7 +68,6 @@ const lowercaseEl = document.getElementById("lowercase");
 const numberEl = document.getElementById("number");
 const symbolEl = document.getElementById("symbol");
 const moreInfoEl = document.getElementById("more-info");
-// const lengthSettingEl = document.getElementById("length-setting");
 const settingEl = document.getElementById("setting");
 
 // 定义复选框的元素和存储键
@@ -128,7 +127,7 @@ function copyOne(index) {
     passwordEl[index].classList.add('password-used');
 }
 
-function initpassword() {
+function initPassword() {
     const length = +lengthEl.value;
     const hasLower = lowercaseEl.checked;
     const hasUpper = uppercaseEl.checked;
@@ -207,7 +206,7 @@ function disableOnlyCheckbox() {
 [uppercaseEl, lowercaseEl, numberEl, symbolEl].forEach((el, index) => {
     el.addEventListener('click', () => {
         disableOnlyCheckbox()
-        initpassword()
+        initPassword()
         if (chrome && chrome.storage) {
             chrome.storage.local.set({
                 [`checkbox${index}`]: el.checked
@@ -230,13 +229,11 @@ function init() {
             });
             // 调用 disableOnlyCheckbox 来确保至少一个复选框被选中
             disableOnlyCheckbox();
-            initpassword();
-            copyOne(0);
+            initPassword();
         });
     }
-    initpassword()
+    initPassword()
     copyBtnFunction()
-    copyOne(0)
 }
 
 // 页面加载时初始化复选框状态
