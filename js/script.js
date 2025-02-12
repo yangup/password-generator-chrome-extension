@@ -1,6 +1,6 @@
 function scriptInit() {
 
-     if (document.getElementById("password-generator-chrome-extension-by-yanpgu") === null) {
+    if (document.getElementById("password-generator-chrome-extension-by-yanpgu") === null) {
         return;
     }
 
