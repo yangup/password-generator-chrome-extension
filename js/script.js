@@ -175,12 +175,21 @@ function generatePassword(length, lower, upper, number, symbol) {
         return "";
     }
     for (let i = 0; i < length; i++) {
+        let randomPassword = "";
         typesArr.forEach(type => {
             const funcName = Object.keys(type)[0];
-            generatedPassword += randomFunc[funcName]();
+            // symbol, 第一位， 最后一位, 不要出现 symbol
+            if (typesArr.length !== 1 && funcName === 'symbol' && (i === 0 || i === length - 1)) {
+                return;
+            }
+            randomPassword += randomFunc[funcName]();
         });
+        if (randomPassword.length > 1) {
+            randomPassword = randomPassword.charAt(Math.floor(Math.random() * randomPassword.length));
+        }
+        generatedPassword += randomPassword;
     }
-    return generatedPassword.slice(0, length);
+    return generatedPassword;
 }
 
 // function that handles the checkboxes state, so at least one needs to be selected. The last checkbox will be disabled.
